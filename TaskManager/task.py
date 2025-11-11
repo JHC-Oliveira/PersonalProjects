@@ -33,6 +33,7 @@ class Task:
 class TaskManager:
     def __init__(self, data_file = DATA_FILE):
         self.data_file = data_file
+        self.tasks = self.load_tasks()
         
     def load_tasks(self):
         if not os.path.exists(self.data_file):
@@ -40,3 +41,7 @@ class TaskManager:
         with open(self.data_file, "r") as f:
             data = json.load(f)
             return[Task.task_from_dict(item) for item in data]
+        
+    def save_task(self):
+        with open(self.data_file, "w") as f:
+            json.dump([task.to_dict() for task in self.tasks], f,indent=4)
