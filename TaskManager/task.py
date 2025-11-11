@@ -2,6 +2,8 @@ import json
 import os
 from datetime import datetime
 
+DATA_FILE = "tasks.json"
+
 class Task:
     def __init__(self, id, description, status,  date_created):
         self.id = id
@@ -28,3 +30,13 @@ class Task:
             date_created = data["date_created"]
         )
         
+class TaskManager:
+    def __init__(self, data_file = DATA_FILE):
+        self.data_file = data_file
+        
+    def load_tasks(self):
+        if not os.path.exists(self.data_file):
+            return []
+        with open(self.data_file, "r") as f:
+            data = json.load(f)
+            return[Task.task_from_dict(item) for item in data]
