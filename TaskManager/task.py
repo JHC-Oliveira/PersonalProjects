@@ -5,7 +5,7 @@ from datetime import datetime
 DATA_FILE = "tasks.json"
 
 class Task:
-    def __init__(self, id, description, status,  date_created):
+    def __init__(self, id, description, status=False,  date_created=None):
         self.id = id
         self.status = status
         self.description = description
@@ -45,3 +45,10 @@ class TaskManager:
     def save_task(self):
         with open(self.data_file, "w") as f:
             json.dump([task.to_dict() for task in self.tasks], f,indent=4)
+            
+    def add_task(self, description):
+        new_id = len(self.tasks) + 1
+        new_task = Task(id=new_id, description=description)
+        self.tasks.append(new_task)
+        self.save_task()
+        print("Task added! ✅")
